@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TopBar extends StatelessWidget {
+class TopBar extends StatefulWidget {
   final String pageTitle;
   const TopBar(
     this.pageTitle, {
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<TopBar> createState() => _TopBarState();
+}
+
+class _TopBarState extends State<TopBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +31,7 @@ class TopBar extends StatelessWidget {
           Container(
             width: double.infinity,
             child: Text(
-              pageTitle,
+              widget.pageTitle,
               style: const TextStyle(
                 fontSize: 30,
                 height: 0.9,
@@ -55,16 +60,21 @@ class TopBar extends StatelessWidget {
                   ),
                 ),
               ),
-              IconButton(
-                splashRadius: 24,
-                padding: const EdgeInsets.only(left: 0, right: 0),
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.more_horiz,
-                  color: Colors.white,
-                  size: 32,
+              Material(
+                color: Colors.transparent,
+                child: IconButton(
+                  splashRadius: 24,
+                  padding: const EdgeInsets.only(left: 0, right: 0),
+                  onPressed: () {
+                    // print(DateTime.parse('2021-11-05T16:36:40.818110').hour);
+                  },
+                  icon: const Icon(
+                    Icons.more_horiz,
+                    color: Colors.white,
+                    size: 32,
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ],
