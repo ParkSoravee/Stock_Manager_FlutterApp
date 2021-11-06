@@ -29,6 +29,10 @@ class MyApp extends StatelessWidget {
                 secondary: const Color(0xffe26b2d),
               ),
           splashColor: const Color(0xffffd07f),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFFFF8244),
+          ),
+          scaffoldBackgroundColor: const Color(0xffffeac7),
           fontFamily: 'NotoSans',
         ),
         home: const HomeScreen(),

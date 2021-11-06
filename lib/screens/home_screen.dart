@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stock_manager/utils/bottom_navigation.dart';
 
 import 'add_screen.dart';
 import 'history_screen.dart';
@@ -45,41 +46,16 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         toolbarHeight: 0,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectPage,
-        currentIndex: _selectedPageIndex,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Theme.of(context).primaryColor,
-        fixedColor: Colors.white,
-        iconSize: 30,
-        items: const [
-          BottomNavigationBarItem(
-            label: 'History',
-            icon: Icon(
-              Icons.history,
-            ),
+      bottomNavigationBar:
+          CustomBottomNavigationBar(_selectPage, _selectedPageIndex),
+      body: Column(
+        children: [
+          TopBar(
+            isMain: true,
+            pageTitle: _pages[_selectedPageIndex]['title'].toString(),
           ),
-          BottomNavigationBarItem(
-            label: 'Search',
-            icon: Icon(
-              Icons.search,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Add',
-            icon: Icon(
-              Icons.add_box_outlined,
-            ),
-          ),
+          Expanded(child: _pages[_selectedPageIndex]['page'] as Widget)
         ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            TopBar(_pages[_selectedPageIndex]['title'].toString()),
-            Expanded(child: _pages[_selectedPageIndex]['page'] as Widget)
-          ],
-        ),
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/history.dart';
+import 'package:flutter_stock_manager/screens/history_detail_screen.dart';
+import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
 import 'package:intl/intl.dart';
 
 class HistoryListTile extends StatelessWidget {
@@ -9,7 +11,17 @@ class HistoryListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) => MainDetailScreen(
+              showScreen: HistoryDetailScreen(
+                historyItems: historyItems,
+              ),
+            ),
+          ),
+        );
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 25,
@@ -36,7 +48,7 @@ class HistoryListTile extends StatelessWidget {
                         subtitle: Text(
                           DateFormat(
                             'EEE dd/MM/yyyy HH:mm น.',
-                          ).format(historyItems.date),
+                          ).format(historyItems.dateIn),
                         ),
                       ),
                       const Divider(
