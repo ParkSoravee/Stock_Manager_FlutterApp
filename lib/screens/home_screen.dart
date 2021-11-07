@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stock_manager/utils/bottom_navigation.dart';
+import 'package:flutter_stock_manager/widgets/bottom_navigation.dart';
 
 import 'add_screen.dart';
 import 'history_screen.dart';

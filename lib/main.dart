@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/history.dart';
+import 'package:flutter_stock_manager/providers/warehouses.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/holding_item.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => HoldingItems(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => WareHouses(),
         ),
       ],
       child: MaterialApp(

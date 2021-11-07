@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -27,7 +28,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Search',
           icon: Icon(
-            Icons.search,
+            CupertinoIcons.search,
           ),
         ),
         BottomNavigationBarItem(

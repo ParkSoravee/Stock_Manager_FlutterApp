@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stock_manager/screens/history_detail_screen.dart';
-import 'package:flutter_stock_manager/utils/bottom_navigation.dart';
+import 'package:flutter_stock_manager/widgets/bottom_navigation.dart';
 import 'package:flutter_stock_manager/widgets/top_bar.dart';
 
 class MainDetailScreen extends StatelessWidget {
   final Widget showScreen;
-  const MainDetailScreen({Key? key, required this.showScreen})
-      : super(key: key);
+  final String title;
+  final String backTitle;
+  const MainDetailScreen({
+    Key? key,
+    required this.showScreen,
+    required this.title,
+    required this.backTitle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +30,10 @@ class MainDetailScreen extends StatelessWidget {
           CustomBottomNavigationBar(_selectPage, _selectedPageIndex),
       body: Column(
         children: [
-          const TopBar(
+          TopBar(
             isMain: false,
-            pageTitle: 'รายละเอียด',
-            backTitle: 'ประวัติ',
+            pageTitle: title,
+            backTitle: backTitle,
           ),
           Expanded(child: showScreen),
         ],
