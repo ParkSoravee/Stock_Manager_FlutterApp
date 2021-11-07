@@ -4,6 +4,8 @@ import 'package:flutter_stock_manager/screens/history_detail_screen.dart';
 import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
 import 'package:intl/intl.dart';
 
+import 'item_list_tile.dart';
+
 class HistoryListTile extends StatelessWidget {
   final History historyItems;
   const HistoryListTile(this.historyItems, {Key? key}) : super(key: key);
@@ -42,18 +44,10 @@ class HistoryListTile extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      ListTile(
-                        title: Text(
-                            '${historyItems.itemId} - ${historyItems.itemTitle}'),
-                        subtitle: Text(
-                          DateFormat(
-                            'EEE dd/MM/yyyy HH:mm น.',
-                          ).format(historyItems.dateIn),
-                        ),
-                      ),
-                      const Divider(
-                        height: 3,
-                        indent: 15,
+                      ItemListTile(
+                        itemId: historyItems.itemId,
+                        itemTitle: historyItems.itemTitle,
+                        date: historyItems.dateIn,
                       ),
                     ],
                   ),

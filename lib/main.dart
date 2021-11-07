@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/history.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/holding_item.dart';
 import 'screens/home_screen.dart';
 
 void main() {
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (ctx) => Histories(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => HoldingItems(),
         ),
       ],
       child: MaterialApp(
