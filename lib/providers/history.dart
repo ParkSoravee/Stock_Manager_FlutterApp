@@ -59,30 +59,33 @@ class Histories with ChangeNotifier {
       final extractedData = (json.decode(utf8.decode(response.bodyBytes))
           as Map<String, dynamic>);
       final historyList = extractedData['histories'];
-      final List<History> loadedHistory = [];
+      List<History> _loadedHistory = [];
 
-      historyList.forEach((historyData) async {
-        // print(historyData['id']);
-        url = Uri.parse('$ENDPOINT/item/${historyData['id']}');
-        final productInfoResponse = await http.get(url);
-        final extractedProductData =
-            json.decode(utf8.decode(productInfoResponse.bodyBytes))
-                as Map<String, dynamic>;
-        loadedHistory.add(
-          History(
-            id: historyData['id'],
-            itemId: historyData['id'], // TODO change id
-            itemTitle: extractedProductData['name'],
-            description: extractedProductData['description'],
-            status: historyData['action'],
-            date: DateTime.parse(historyData['date']),
-            dateIn: DateTime.parse(extractedProductData['date']),
-            dateOut: DateTime.parse(extractedProductData['dateOut']),
-          ),
-        );
-      });
-      _items = loadedHistory;
-      notifyListeners();
+      // await historyList.forEach((historyData) async {
+      //   url = Uri.parse('$ENDPOINT/item/${historyData['id']}');
+      //   final productInfoResponse = await http.get(url);
+      //   final extractedProductData =
+      //       json.decode(utf8.decode(productInfoResponse.bodyBytes))
+      //           as Map<String, dynamic>;
+      //   // print(extractedProductData['barcode']);
+      //   _loadedHistory.add(History(
+      //     id: extractedProductData['barcode'],
+      //     itemId: historyData['id'],
+      //     itemTitle: extractedProductData['name'],
+      //     description: extractedProductData['description'],
+      //     status: historyData['action'],
+      //     date: DateTime.parse(historyData['date']),
+      //     dateIn: DateTime.parse(extractedProductData['date']),
+      //     dateOut: extractedProductData['dateOut'] == null
+      //         ? null
+      //         : DateTime.parse(extractedProductData['dateOut']),
+      //   ));
+      //   print(_loadedHistory);
+      // });
+
+      print(_loadedHistory);
+      _items = _loadedHistory;
+      // notifyListeners();
     } catch (error) {
       print(error);
       throw error;

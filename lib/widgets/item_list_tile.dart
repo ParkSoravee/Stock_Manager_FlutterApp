@@ -5,20 +5,23 @@ class ItemListTile extends StatelessWidget {
   final String itemId;
   final String itemTitle;
   final DateTime date;
+  final String? position;
 
   const ItemListTile({
-    Key? key,
     required this.itemId,
     required this.itemTitle,
     required this.date,
-  }) : super(key: key);
+    this.position,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
-          title: Text('$itemId - $itemTitle'),
+          title: Text(position == null
+              ? '$itemId - $itemTitle'
+              : '$position - $itemTitle'),
           subtitle: Text(
             DateFormat(
               'EEE dd/MM/yyyy HH:mm น.',

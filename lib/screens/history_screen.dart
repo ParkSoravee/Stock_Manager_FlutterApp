@@ -11,25 +11,36 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  var _isLoading = true;
+  late final loadedHistoryItem;
   @override
   void initState() {
-    Provider.of<Histories>(context, listen: false).fetchAndSetsHistories();
+    Provider.of<Histories>(context, listen: false)
+        .fetchAndSetsHistories()
+        .then((_) {
+      setState(() {
+        loadedHistoryItem =
+            Provider.of<Histories>(context, listen: false).items;
+        _isLoading = false;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final loadedHistoryItem =
-        Provider.of<Histories>(context, listen: false).items;
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: loadedHistoryItem.length,
-            itemBuilder: (ctx, i) => HistoryListTile(loadedHistoryItem[i]),
-          ),
-        )
-      ],
-    );
+    return _isLoading
+        ? Center(child: CircularProgressIndicator())
+        : Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: loadedHistoryItem.length,
+                  itemBuilder: (ctx, i) =>
+                      HistoryListTile(loadedHistoryItem[i]),
+                ),
+              )
+            ],
+          );
   }
 }

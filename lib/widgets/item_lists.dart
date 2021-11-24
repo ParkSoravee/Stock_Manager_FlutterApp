@@ -13,17 +13,17 @@ class ItemLists extends StatefulWidget {
 }
 
 class _ItemListsState extends State<ItemLists> {
-  late final List<Item> items;
-
   @override
   void initState() {
     // fetch items
-    items = Provider.of<WareHouses>(context, listen: false).fetchItems();
+    Provider.of<WareHouses>(context, listen: false).fetchItems();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Item> items =
+        Provider.of<WareHouses>(context, listen: false).items;
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (ctx, i) => Padding(
@@ -33,6 +33,7 @@ class _ItemListsState extends State<ItemLists> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: ItemListTile(
+              position: items[i].position,
               itemId: items[i].itemId,
               itemTitle: items[i].itemTitle,
               date: items[i].date,

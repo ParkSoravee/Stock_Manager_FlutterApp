@@ -11,16 +11,26 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  var _isLoading = true;
+  late List<WareHouse> loadedWareHouse;
+
   @override
   void initState() {
-    Provider.of<WareHouses>(context, listen: false).fetchWareHouse();
+    Provider.of<WareHouses>(context, listen: false).fetchWareHouses().then((_) {
+      setState(() {
+        loadedWareHouse =
+            Provider.of<WareHouses>(context, listen: false).warehouses;
+        // print(loadedWareHouse);
+        _isLoading = false;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final loadedWareHouse =
-        Provider.of<WareHouses>(context, listen: false).items;
-    return WareHouseLists(loadedWareHouse);
+    return _isLoading
+        ? Center(child: CircularProgressIndicator())
+        : WareHouseLists(loadedWareHouse);
   }
 }

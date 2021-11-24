@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/warehouses.dart';
 import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
-
-import 'item_lists.dart';
+import 'package:flutter_stock_manager/widgets/shelf_list.dart';
 
 class ZoneItem extends StatelessWidget {
+  final String wareHouseName;
   final Zone zone;
-  final int floor;
-  const ZoneItem(this.floor, this.zone, {Key? key}) : super(key: key);
+  const ZoneItem({
+    required this.wareHouseName,
+    required this.zone,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +19,25 @@ class ZoneItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) => MainDetailScreen(
-              title: 'โซน ${zone.id}',
-              backTitle: 'ชั้น $floor',
-              showScreen: ItemLists(),
+              title: 'โซน ${zone.name}',
+              backTitle: 'โกดัง $wareHouseName',
+              showScreen: ShelfList(
+                wareHouseName: wareHouseName,
+                zoneName: zone.name,
+              ),
+              // showScreen: null,
             ),
           ),
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.only(left: 15.0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               CupertinoIcons.rectangle_stack,
               color: Theme.of(context).primaryColor,
-              size: 33,
             ),
             const SizedBox(
               width: 5,
@@ -43,13 +48,12 @@ class ZoneItem extends StatelessWidget {
                 children: [
                   ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    title: Text('โซน ${zone.id}'),
-                    subtitle: Text('${zone.itemCount} items'),
-                    trailing: Icon(Icons.arrow_forward_ios_rounded),
+                    title: Text('โซน ${zone.name}'),
+                    trailing: Text('${zone.itemCount} items'),
                   ),
                   Divider(
                     height: 2,
-                    thickness: 1,
+                    thickness: 0.3,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ],

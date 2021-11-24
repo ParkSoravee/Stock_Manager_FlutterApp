@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stock_manager/providers/warehouses.dart';
 import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
-import 'package:flutter_stock_manager/widgets/zone_lists.dart';
 
-class FloorItem extends StatelessWidget {
-  final int floor;
-  final String wareHouseId;
-  final int itemCount;
-  const FloorItem(this.floor, this.wareHouseId, this.itemCount, {Key? key})
-      : super(key: key);
+import 'item_lists.dart';
+
+class ShelfItem extends StatelessWidget {
+  final String wareHouseName;
+  final String zoneName;
+  final Shelf shelfItem;
+  const ShelfItem({
+    required this.wareHouseName,
+    required this.zoneName,
+    required this.shelfItem,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +22,22 @@ class FloorItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) => MainDetailScreen(
-              title: 'ชั้น ${floor + 1}',
-              backTitle: 'โกดัง $wareHouseId',
-              showScreen: ZoneLists(floor + 1),
+              title: 'ชั้นวาง ${shelfItem.name}',
+              backTitle: 'โซน $zoneName',
+              showScreen: ItemLists(),
             ),
           ),
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               CupertinoIcons.rectangle_stack,
               color: Theme.of(context).primaryColor,
+              size: 33,
             ),
             const SizedBox(
               width: 5,
@@ -42,12 +48,13 @@ class FloorItem extends StatelessWidget {
                 children: [
                   ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    title: Text('ชั้น ${floor + 1}'),
-                    trailing: Text('$itemCount items'),
+                    title: Text('ชั้นวาง ${shelfItem.name}'),
+                    subtitle: Text('${shelfItem.itemCount} items'),
+                    trailing: Icon(Icons.arrow_forward_ios_rounded),
                   ),
                   Divider(
                     height: 2,
-                    thickness: 0.3,
+                    thickness: 1,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ],

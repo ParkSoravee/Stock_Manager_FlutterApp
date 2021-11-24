@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/warehouses.dart';
-import 'package:flutter_stock_manager/widgets/floor_item.dart';
+import 'package:flutter_stock_manager/widgets/zone_item.dart';
 
 class WareHouseItem extends StatefulWidget {
   final WareHouse wareHouse;
@@ -35,7 +35,7 @@ class _WareHouseItemState extends State<WareHouseItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'โกดัง ${widget.wareHouse.id}',
+                    'โกดัง ${widget.wareHouse.name}',
                     style: const TextStyle(fontSize: 21),
                   ),
                   Icon(
@@ -53,8 +53,11 @@ class _WareHouseItemState extends State<WareHouseItem> {
             color: Theme.of(context).colorScheme.secondary,
           ),
           if (isExpand)
-            for (var i = 0; i < widget.wareHouse.floor.length; i++)
-              FloorItem(i, widget.wareHouse.id, widget.wareHouse.floor[i]),
+            for (var i = 0; i < widget.wareHouse.zone.length; i++)
+              ZoneItem(
+                wareHouseName: widget.wareHouse.name,
+                zone: widget.wareHouse.zone[i],
+              ),
         ],
       ),
     );
