@@ -37,19 +37,20 @@ class HistoryListTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  historyItems.status == 'add' ? Icons.add : Icons.remove,
+                  historyItems.status == 'insert' ? Icons.add : Icons.remove,
                   size: 30,
-                  color:
-                      historyItems.status == 'add' ? Colors.green : Colors.red,
+                  color: historyItems.status == 'insert'
+                      ? Colors.green
+                      : Colors.red,
                 ),
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ItemListTile(
-                        itemId: historyItems.itemId,
+                        itemId: historyItems.id,
                         itemTitle: historyItems.itemTitle,
-                        date: historyItems.dateIn,
+                        date: historyItems.date,
                       ),
                     ],
                   ),

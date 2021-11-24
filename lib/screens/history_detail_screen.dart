@@ -12,7 +12,7 @@ class HistoryDetailScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 15,
-        horizontal: MediaQuery.of(context).size.width * 15 / 100,
+        horizontal: MediaQuery.of(context).size.width * 10 / 100,
       ),
       child: Column(
         children: [
@@ -21,11 +21,10 @@ class HistoryDetailScreen extends StatelessWidget {
             style: const TextStyle(fontSize: 22),
           ),
           const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Column(
             children: [
-              Text('ID: ${historyItems.id}'),
-              Text('ID สินค้า: ${historyItems.itemId}'),
+              Text('ID: ${historyItems.itemId}'),
+              Text('ID สินค้า: ${historyItems.id}'),
             ],
           ),
           const SizedBox(
@@ -71,7 +70,7 @@ class HistoryDetailScreen extends StatelessWidget {
           const Divider(
             height: 25,
           ),
-          const Text('description...')
+          Text(historyItems.description),
         ],
       ),
     );

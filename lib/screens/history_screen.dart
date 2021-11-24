@@ -13,7 +13,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
-    Provider.of<Histories>(context, listen: false).fetchHistory();
+    Provider.of<Histories>(context, listen: false).fetchAndSetsHistories();
     super.initState();
   }
 
