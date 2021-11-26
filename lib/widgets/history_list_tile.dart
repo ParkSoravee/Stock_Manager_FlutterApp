@@ -20,7 +20,7 @@ class HistoryListTile extends StatelessWidget {
               title: 'รายละเอียด',
               backTitle: 'ประวัติ',
               showScreen: HistoryDetailScreen(
-                historyItems: historyItems,
+                historyId: historyItems.id,
               ),
             ),
           ),
@@ -48,7 +48,7 @@ class HistoryListTile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ItemListTile(
-                        itemId: historyItems.id,
+                        itemId: historyItems.itemId,
                         itemTitle: historyItems.itemTitle,
                         date: historyItems.date,
                       ),
