@@ -57,7 +57,15 @@ class WareHouses with ChangeNotifier {
     // )
   ];
 
-  List<Item> _items = [];
+  List<Item> _items = [
+    // Item(
+    //   id: '1111',
+    //   itemId: '123123',
+    //   itemTitle: 'test',
+    //   date: DateTime.now(),
+    //   position: '1-A',
+    // ),
+  ];
 
   List<WareHouse> get warehouses {
     return [..._warehouseItems];
@@ -119,25 +127,40 @@ class WareHouses with ChangeNotifier {
         );
       });
       _shelfItems = _loadedShelfs;
-      print('finished');
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+      throw error;
+    }
   }
 
-  Future<void> fetchItems() async {
+  Future<void> fetchItems(String warehouse, String zone, String shelf) async {
     print('fetch items');
-    // return [
-    //   Item(
-    //     id: '1',
-    //     itemId: '123456',
-    //     itemTitle: 'ยาสีฟันแปรงไม่สะอาด',
-    //     date: DateTime.parse('2021-11-05T16:36:40.818110'),
-    //   ),
-    //   Item(
-    //     id: '2',
-    //     itemId: '234567',
-    //     itemTitle: 'มะม่วงดองน้ำปลา',
-    //     date: DateTime.parse('2021-11-04T16:37:40.818110'),
-    //   ),
-    // ];
+
+    try {
+      print('fetch shelfs');
+      var url =
+          Uri.parse('$ENDPOINT/warehouse/$warehouse/zone/$zone/shelf/$shelf');
+      final response = await http.get(url);
+      final extractedData = (json.decode(utf8.decode(response.bodyBytes))
+          as Map<String, dynamic>);
+      final itemList = extractedData['items'] as List<dynamic>;
+      final List<Item> _loadedItems = [];
+      // print(wareHouseList);
+
+      itemList.forEach((itemData) {
+        _loadedItems.add(
+          Item(
+            itemId: itemData['id'],
+            itemTitle: itemData['name'],
+            date: DateTime.parse(itemData['date']),
+            location: itemData['location'],
+          ),
+        );
+      });
+      _items = _loadedItems;
+    } catch (error) {
+      print(error);
+      throw error;
+    }
   }
 }

@@ -24,7 +24,11 @@ class ShelfItem extends StatelessWidget {
             builder: (ctx) => MainDetailScreen(
               title: 'ชั้นวาง ${shelfItem.name}',
               backTitle: 'โซน $zoneName',
-              showScreen: ItemLists(),
+              showScreen: ItemLists(
+                wareHouseName: wareHouseName,
+                zoneName: zoneName,
+                shelfName: shelfItem.name,
+              ),
             ),
           ),
         );

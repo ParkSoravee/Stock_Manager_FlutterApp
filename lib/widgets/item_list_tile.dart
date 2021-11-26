@@ -21,7 +21,7 @@ class ItemListTile extends StatelessWidget {
         ListTile(
           title: Text(position == null
               ? '$itemId - $itemTitle'
-              : '$position - $itemTitle'),
+              : '$position $itemTitle'),
           subtitle: Text(
             DateFormat(
               'EEE dd/MM/yyyy HH:mm น.',
