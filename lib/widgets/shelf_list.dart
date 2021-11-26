@@ -18,33 +18,44 @@ class ShelfList extends StatefulWidget {
 }
 
 class _ShelfListState extends State<ShelfList> {
+  var _isLoading = true;
+  late final loadedShelfs;
   @override
   void initState() {
-    Provider.of<WareHouses>(context, listen: false).fetchShelfs();
+    Provider.of<WareHouses>(context, listen: false)
+        .fetchShelfs(widget.wareHouseName, widget.zoneName)
+        .then((_) {
+      setState(() {
+        loadedShelfs = Provider.of<WareHouses>(context, listen: false).shelfs;
+        _isLoading = false;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Shelf> shelfs =
-        Provider.of<WareHouses>(context, listen: false).shelfs;
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: shelfs.length,
-            itemBuilder: (ctx, i) => ShelfItem(
-              wareHouseName: widget.wareHouseName,
-              zoneName: widget.zoneName,
-              shelfItem: shelfs[i],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 7),
-          child: Text('${shelfs.length} items'),
-        )
-      ],
-    );
+    return _isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: loadedShelfs.length,
+                  itemBuilder: (ctx, i) => ShelfItem(
+                    wareHouseName: widget.wareHouseName,
+                    zoneName: widget.zoneName,
+                    shelfItem: loadedShelfs[i],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: Text('${loadedShelfs.length} items'),
+              )
+            ],
+          );
   }
 }

@@ -32,7 +32,10 @@ class Shelf {
   final String name;
   final int itemCount;
 
-  Shelf(this.name, this.itemCount);
+  Shelf({
+    required this.name,
+    required this.itemCount,
+  });
 }
 
 class WareHouses with ChangeNotifier {
@@ -43,7 +46,16 @@ class WareHouses with ChangeNotifier {
 
   List<Zone> _zoneItems = [];
 
-  List<Shelf> _shelfItems = [];
+  List<Shelf> _shelfItems = [
+    // Shelf(
+    //   name: '1',
+    //   itemCount: 0,
+    // ),
+    // Shelf(
+    //   name: '2',
+    //   itemCount: 0,
+    // )
+  ];
 
   List<Item> _items = [];
 
@@ -61,8 +73,8 @@ class WareHouses with ChangeNotifier {
 
   Future<void> fetchWareHouses() async {
     print('fetch warehouse');
-    var url = Uri.parse('$ENDPOINT/warehouse');
     try {
+      var url = Uri.parse('$ENDPOINT/warehouse');
       final response = await http.get(url);
       final extractedData = (json.decode(utf8.decode(response.bodyBytes))
           as Map<String, dynamic>);
@@ -87,17 +99,28 @@ class WareHouses with ChangeNotifier {
         );
       });
       _warehouseItems = _loadedWarehouses;
-      // print(_loadedWarehouses);
-      // notifyListeners();
     } catch (error) {}
   }
 
-  Future<void> fetchShelfs() async {
-    print('fetch shelfs');
-    [
-      Shelf('1', 5),
-      Shelf('2', 10),
-    ];
+  Future<void> fetchShelfs(String warehouse, String zone) async {
+    try {
+      print('fetch shelfs');
+      var url = Uri.parse('$ENDPOINT/warehouse/$warehouse/zone/$zone');
+      final response = await http.get(url);
+      final extractedData = (json.decode(utf8.decode(response.bodyBytes))
+          as Map<String, dynamic>);
+      final shelfList = extractedData['shelfs'] as List<dynamic>;
+      final List<Shelf> _loadedShelfs = [];
+      // print(wareHouseList);
+
+      shelfList.forEach((shelfData) {
+        _loadedShelfs.add(
+          Shelf(name: shelfData['shelf'], itemCount: shelfData['item']),
+        );
+      });
+      _shelfItems = _loadedShelfs;
+      print('finished');
+    } catch (error) {}
   }
 
   Future<void> fetchItems() async {
