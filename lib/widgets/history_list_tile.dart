@@ -20,6 +20,7 @@ class HistoryListTile extends StatelessWidget {
               title: 'รายละเอียด',
               backTitle: 'ประวัติ',
               showScreen: HistoryDetailScreen(
+                itemId: historyItems.itemId,
                 historyId: historyItems.id,
               ),
             ),

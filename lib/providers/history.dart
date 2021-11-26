@@ -80,20 +80,19 @@ class Histories with ChangeNotifier {
     }
   }
 
-  Future<void> fetchAndSetHistoryDetail(String itemId) async {
+  Future<void> fetchAndSetHistoryDetail(String historyId) async {
     try {
-      print(itemId);
+      final itemId = findItemIdByHistoryId(historyId);
+      final _historyIndex = _items.indexWhere((item) => item.id == historyId);
+
+      if (_items[_historyIndex].detail != null) return;
+
       var url = Uri.parse('$ENDPOINT/item/$itemId');
       final productDetailResponse = await http.get(url);
       final extractedProductDetail =
           json.decode(utf8.decode(productDetailResponse.bodyBytes))
               as Map<String, dynamic>;
-      print(extractedProductDetail);
-      // ! Debug
-      print(productDetailResponse.body);
-      print(extractedProductDetail['barcode']);
 
-      final _historyIndex = _items.indexWhere((item) => item.itemId == itemId);
       _items[_historyIndex].updateDetail(HistoryDetail(
         id: extractedProductDetail['barcode'],
         description: extractedProductDetail['description'],
@@ -102,6 +101,7 @@ class Histories with ChangeNotifier {
             ? null
             : DateTime.parse(extractedProductDetail['dateOut']),
       ));
+      print('finished');
     } catch (error) {
       print(error);
       throw error;
@@ -110,5 +110,9 @@ class Histories with ChangeNotifier {
 
   History getById(String id) {
     return _items.firstWhere((element) => element.id == id);
+  }
+
+  String findItemIdByHistoryId(String historyId) {
+    return _items.firstWhere((element) => element.id == historyId).itemId;
   }
 }

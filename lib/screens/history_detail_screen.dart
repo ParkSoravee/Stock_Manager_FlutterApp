@@ -4,8 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HistoryDetailScreen extends StatefulWidget {
+  final String itemId;
   final String historyId;
-  const HistoryDetailScreen({required this.historyId});
+  const HistoryDetailScreen({
+    required this.itemId,
+    required this.historyId,
+  });
 
   @override
   _HistoryDetailScreenState createState() => _HistoryDetailScreenState();
