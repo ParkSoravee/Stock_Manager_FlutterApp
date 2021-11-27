@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:flutter_stock_manager/utils/item.dart';
+import 'package:flutter_stock_manager/models/item.dart';
 
 final ENDPOINT = dotenv.env['ENDPOINT'];
 
@@ -39,23 +39,11 @@ class Shelf {
 }
 
 class WareHouses with ChangeNotifier {
-  List<WareHouse> _warehouseItems = [
-    // WareHouse('1', [2, 3]),
-    // WareHouse('2', [13, 9]),
-  ];
+  List<WareHouse> _warehouseItems = [];
 
   List<Zone> _zoneItems = [];
 
-  List<Shelf> _shelfItems = [
-    // Shelf(
-    //   name: '1',
-    //   itemCount: 0,
-    // ),
-    // Shelf(
-    //   name: '2',
-    //   itemCount: 0,
-    // )
-  ];
+  List<Shelf> _shelfItems = [];
 
   List<Item> _items = [
     // Item(
@@ -134,8 +122,6 @@ class WareHouses with ChangeNotifier {
   }
 
   Future<void> fetchItems(String warehouse, String zone, String shelf) async {
-    print('fetch items');
-
     try {
       print('fetch shelfs');
       var url =
@@ -152,12 +138,37 @@ class WareHouses with ChangeNotifier {
           Item(
             itemId: itemData['id'],
             itemTitle: itemData['name'],
-            date: DateTime.parse(itemData['date']),
+            dateIn: DateTime.parse(itemData['date']),
             location: itemData['location'],
           ),
         );
       });
       _items = _loadedItems;
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  Future<Item> fetchItemDetail(String itemId) async {
+    print('fetch items details');
+    try {
+      var url = Uri.parse('$ENDPOINT/item/$itemId');
+      final productDetailResponse = await http.get(url);
+      final extractedProductDetail =
+          json.decode(utf8.decode(productDetailResponse.bodyBytes))
+              as Map<String, dynamic>;
+      return Item(
+        itemId: itemId,
+        barcode: extractedProductDetail['barcode'],
+        itemTitle: extractedProductDetail['name'],
+        dateIn: DateTime.parse(extractedProductDetail['date']),
+        dateOut: extractedProductDetail['dateOut'] == null
+            ? null
+            : DateTime.parse(extractedProductDetail['dateOut']),
+        location: extractedProductDetail['location'],
+        description: extractedProductDetail['description'],
+      );
     } catch (error) {
       print(error);
       throw error;

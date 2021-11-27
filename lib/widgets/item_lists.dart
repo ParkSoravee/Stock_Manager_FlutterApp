@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/warehouses.dart';
-import 'package:flutter_stock_manager/utils/item.dart';
+import 'package:flutter_stock_manager/screens/detail_screen.dart';
+import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
+import 'package:flutter_stock_manager/models/item.dart';
 import 'package:flutter_stock_manager/widgets/item_list_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -52,19 +54,25 @@ class _ItemListsState extends State<ItemLists> {
               Expanded(
                 child: ListView.builder(
                   itemCount: _loadedItems.length,
-                  itemBuilder: (ctx, i) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: ItemListTile(
-                          position: _loadedItems[i].location,
-                          itemId: _loadedItems[i].itemId,
-                          itemTitle: _loadedItems[i].itemTitle,
-                          date: _loadedItems[i].date,
+                  itemBuilder: (ctx, i) => InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => MainDetailScreen(
+                            title: 'รายละเอียด',
+                            backTitle: 'ชั้นวาง ${widget.shelfName}',
+                            showScreen: DetailScreen(
+                              itemId: _loadedItems[i].itemId,
+                            ),
+                          ),
                         ),
-                      ),
+                      );
+                    },
+                    child: ItemListTile(
+                      position: _loadedItems[i].location,
+                      itemId: _loadedItems[i].itemId,
+                      itemTitle: _loadedItems[i].itemTitle,
+                      date: _loadedItems[i].dateIn,
                     ),
                   ),
                 ),
