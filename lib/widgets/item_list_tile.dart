@@ -5,27 +5,44 @@ class ItemListTile extends StatelessWidget {
   final String itemId;
   final String itemTitle;
   final DateTime date;
-  final String? position;
+  final String position;
 
   const ItemListTile({
     required this.itemId,
     required this.itemTitle,
     required this.date,
-    this.position,
+    required this.position,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          title: Text(position == null
-              ? '$itemId - $itemTitle'
-              : '$position $itemTitle'),
-          subtitle: Text(
-            DateFormat(
-              'EEE dd/MM/yyyy HH:mm น.',
-            ).format(date),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Row(
+            children: [
+              Container(
+                child: Text(
+                  position,
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text('$itemTitle'),
+                      subtitle: Text(
+                        DateFormat(
+                          'EEE dd/MM/yyyy HH:mm น.',
+                        ).format(date),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
         Divider(

@@ -4,8 +4,6 @@ import 'package:flutter_stock_manager/screens/history_detail_screen.dart';
 import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
 import 'package:intl/intl.dart';
 
-import 'item_list_tile.dart';
-
 class HistoryListTile extends StatelessWidget {
   final History historyItems;
   const HistoryListTile(this.historyItems, {Key? key}) : super(key: key);
@@ -20,7 +18,7 @@ class HistoryListTile extends StatelessWidget {
               title: 'รายละเอียด',
               backTitle: 'ประวัติ',
               showScreen: HistoryDetailScreen(
-                itemId: historyItems.itemId,
+                // itemId: historyItems.itemId,
                 historyId: historyItems.id,
               ),
             ),
@@ -46,12 +44,31 @@ class HistoryListTile extends StatelessWidget {
                 ),
                 Expanded(
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      ItemListTile(
-                        itemId: historyItems.itemId,
-                        itemTitle: historyItems.itemTitle,
-                        date: historyItems.date,
+                      ListTile(
+                        title: Text(historyItems.itemTitle),
+                        subtitle: Text(
+                          historyItems.itemId,
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                        trailing: Text(
+                          DateFormat(
+                            'dd/MM/yyyy\nHH:mm น.',
+                          ).format(historyItems.date),
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        height: 2,
+                        indent: 15,
+                        endIndent: 15,
+                        thickness: 0.6,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ],
                   ),

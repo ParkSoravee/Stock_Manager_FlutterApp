@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HistoryDetailScreen extends StatefulWidget {
-  final String itemId;
+  // final String itemId;
   final String historyId;
   const HistoryDetailScreen({
-    required this.itemId,
+    // required this.itemId,
     required this.historyId,
   });
 
@@ -50,16 +50,15 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                   loadedHistory.itemTitle,
                   style: const TextStyle(fontSize: 22),
                 ),
-                const Divider(),
-                Column(
-                  children: [
-                    Text(loadedHistory.detail == null
-                        ? 'ID: -'
-                        : 'ID: ${loadedHistory.detail!.id}'),
-                    // Text('ID: ${historyItems.detail.id}'),
-                    Text('ID สินค้า: ${loadedHistory.itemId}'),
-                  ],
+                Text(loadedHistory.detail == null
+                    ? 'barcode: -'
+                    : 'barcode: ${loadedHistory.detail!.id}'),
+                // Text('ID สินค้า: ${loadedHistory.itemId}'),
+                ListTile(
+                  leading: Text('ID สินค้า:'),
+                  title: Text(loadedHistory.itemId),
                 ),
+                const Divider(),
                 const SizedBox(
                   height: 5,
                 ),

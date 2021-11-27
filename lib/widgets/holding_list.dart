@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/holding_item.dart';
-import 'package:flutter_stock_manager/widgets/item_list_tile.dart';
+import 'package:flutter_stock_manager/widgets/history_item_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class HoldingList extends StatefulWidget {
@@ -23,7 +23,7 @@ class _HoldingListState extends State<HoldingList> {
             onTap: () {},
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: ItemListTile(
+              child: HistoryItemListTile(
                 itemId: loadedHoldingItem[i].itemId,
                 itemTitle: loadedHoldingItem[i].itemTitle,
                 date: loadedHoldingItem[i].date,
