@@ -67,7 +67,7 @@ class WareHouses with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchWareHouses() async {
+  Future<bool> fetchWareHouses() async {
     print('fetch warehouse');
     try {
       var url = Uri.parse('$ENDPOINT/warehouse');
@@ -95,7 +95,11 @@ class WareHouses with ChangeNotifier {
         );
       });
       _warehouseItems = _loadedWarehouses;
-    } catch (error) {}
+      return true;
+    } catch (error) {
+      print(error);
+      return false;
+    }
   }
 
   Future<void> fetchShelfs(String warehouse, String zone) async {

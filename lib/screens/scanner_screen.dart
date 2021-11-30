@@ -1,14 +1,131 @@
-import 'package:flutter/material.dart';
+// import 'dart:developer';
+import 'dart:io';
 
-class ScannerScreen extends StatelessWidget {
-  const ScannerScreen({Key? key}) : super(key: key);
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+class ScannerScreen extends StatefulWidget {
+  final Function addToHoldingItems;
+  const ScannerScreen(this.addToHoldingItems, {Key? key}) : super(key: key);
+
+  @override
+  _ScannerScreenState createState() => _ScannerScreenState();
+}
+
+class _ScannerScreenState extends State<ScannerScreen> {
+  Barcode? result;
+  QRViewController? controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  // for hot reload
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller!.pauseCamera();
+    }
+    controller!.resumeCamera();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Barcode scanner'),
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            _buildQrView(context),
+            Positioned(
+              top: 0,
+              child: Container(
+                color: Colors.transparent,
+                height: 60,
+                width: MediaQuery.of(context).size.width - 25,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(6),
+                        primary: Colors.grey.withOpacity(0.3),
+                        elevation: 0,
+                      ),
+                      child: Icon(
+                        CupertinoIcons.back,
+                        size: 30,
+                        // color: Colors.transparent,
+                      ),
+                    ),
+                    Text(
+                      'แสกนสินค้า',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(6),
+                        primary: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      child: Icon(
+                        Icons.flash_off,
+                        size: 30,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _buildQrView(BuildContext context) {
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: _onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+        borderColor: Theme.of(context).primaryColor,
+        borderRadius: 10,
+        borderLength: 30,
+        borderWidth: 10,
+        cutOutSize: MediaQuery.of(context).size.width * 0.8,
+      ),
+      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
+    controller.scannedDataStream.listen((scanData) {
+      // setState(() {
+      result = scanData;
+      if (result!.code!.length == 13) {
+        widget.addToHoldingItems(result!.code!);
+        controller.stopCamera();
+        controller.dispose();
+        Navigator.pop(context);
+      }
+      // });
+    });
+  }
+
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    // log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
   }
 }

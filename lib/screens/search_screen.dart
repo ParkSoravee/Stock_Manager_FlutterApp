@@ -16,13 +16,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    Provider.of<WareHouses>(context, listen: false).fetchWareHouses().then((_) {
-      setState(() {
-        loadedWareHouse =
-            Provider.of<WareHouses>(context, listen: false).warehouses;
-        // print(loadedWareHouse);
-        _isLoading = false;
-      });
+    Provider.of<WareHouses>(context, listen: false)
+        .fetchWareHouses()
+        .then((result) {
+      if (result == true) {
+        setState(() {
+          loadedWareHouse =
+              Provider.of<WareHouses>(context, listen: false).warehouses;
+          // print(loadedWareHouse);
+          _isLoading = false;
+        });
+      }
     });
     super.initState();
   }

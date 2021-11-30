@@ -6,6 +6,12 @@ import 'package:flutter_stock_manager/widgets/holding_list.dart';
 class AddScreen extends StatelessWidget {
   const AddScreen({Key? key}) : super(key: key);
 
+  void addToHoldingItems(String barcode) async {
+    print(barcode);
+
+    // await fetchItemDetail()
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +19,7 @@ class AddScreen extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (ctx) => const ScannerScreen(),
+              builder: (ctx) => ScannerScreen(addToHoldingItems),
             ),
           );
         },

@@ -33,4 +33,6 @@ class HoldingItems with ChangeNotifier {
   List<HoldingItem> get items {
     return [..._items];
   }
+
+  Future<void> addHoldingItem(String barcode) async {}
 }
