@@ -37,6 +37,15 @@ class _ScannerScreenState extends State<ScannerScreen> {
           children: [
             _buildQrView(context),
             Positioned(
+              child: Text(
+                'ให้ตำแหน่ง QR/Barcode อยู่กลางภาพ',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              bottom: MediaQuery.of(context).size.height / 6,
+            ),
+            Positioned(
               top: 0,
               child: Container(
                 color: Colors.transparent,
@@ -110,12 +119,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
     controller.scannedDataStream.listen((scanData) {
       // setState(() {
       result = scanData;
-      if (result!.code!.length == 13) {
-        widget.addToHoldingItems(result!.code!);
+      if (result!.code!.length == 13 &&
+          result!.format == BarcodeFormat.code128) {
+        widget.addToHoldingItems(context, scanData.code!);
         controller.stopCamera();
         controller.dispose();
         Navigator.pop(context);
-      }
+      } else {}
       // });
     });
   }
