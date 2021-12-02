@@ -94,4 +94,16 @@ class HoldingItems with ChangeNotifier {
       throw error;
     }
   }
+
+  Future<void> addItem() async {
+    // TODO: delete a item in _items (no need fetch again) and post add item
+  }
+
+  HoldingItem findByItemId(String id) {
+    try {
+      return _items.firstWhere((item) => item.itemId == id);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

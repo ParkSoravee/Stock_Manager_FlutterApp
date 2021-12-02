@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/holding_item.dart';
+import 'package:flutter_stock_manager/screens/add_item_locate_screen.dart';
 import 'package:flutter_stock_manager/widgets/history_item_list_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,16 @@ class _HoldingListState extends State<HoldingList> {
               itemBuilder: (ctx, i) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    // Go to add place and confirm screen
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => AddItemLocateScreen(
+                          holdingItem: loadedHoldingItem[i],
+                        ),
+                      ),
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: HistoryItemListTile(

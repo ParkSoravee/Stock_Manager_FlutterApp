@@ -5,6 +5,8 @@ import 'package:flutter_stock_manager/screens/scanner_screen.dart';
 import 'package:flutter_stock_manager/widgets/holding_list.dart';
 import 'package:provider/provider.dart';
 
+import 'add_item_locate_screen.dart';
+
 class AddScreen extends StatelessWidget {
   const AddScreen({Key? key}) : super(key: key);
 
@@ -18,7 +20,55 @@ class AddScreen extends StatelessWidget {
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text('An error occurred!'),
-          content: Text('Barcode is not valid, please try again...'),
+          content: Text('Barcode is invalid, please try again...'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('Okay'))
+          ],
+        ),
+      );
+    }
+  }
+
+  void addItemByQR(BuildContext context) async {
+    try {
+      var _itemId = '';
+
+      void setItemId(BuildContext context, String qrcode) {
+        _itemId = qrcode;
+      }
+
+      final holdingItem = Provider.of<HoldingItems>(context, listen: false);
+      // Scanner QR id
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => ScannerScreen(
+            setValueFn: setItemId,
+            isQr: true,
+          ),
+        ),
+      );
+      // print(_itemId);
+      if (_itemId == '') return;
+      final myHoldingItem = holdingItem.findByItemId(_itemId);
+      // Go to add place and confirm screen
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => AddItemLocateScreen(
+            holdingItem: myHoldingItem,
+          ),
+        ),
+      );
+    } catch (error) {
+      print(error);
+      await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('An error occurred!'),
+          content: Text('QRcode is invalid, please try again...'),
           actions: [
             TextButton(
                 onPressed: () {
@@ -33,13 +83,12 @@ class AddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<HoldingItems>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (ctx) => ScannerScreen(addToHoldingItems),
+              builder: (ctx) => ScannerScreen(setValueFn: addToHoldingItems),
             ),
           );
         },
@@ -59,12 +108,24 @@ class AddScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: double.infinity,
-                  child: const Text(
-                    'รอเข้าคลัง',
-                    style: TextStyle(fontSize: 25),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'เลือกสินค้าเข้าคลัง',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        addItemByQR(context);
+                      },
+                      icon: Icon(
+                        Icons.qr_code_scanner_rounded,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      splashRadius: 27,
+                    ),
+                  ],
                 ),
                 Divider(
                   height: 2,

@@ -6,8 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScannerScreen extends StatefulWidget {
-  final Function addToHoldingItems;
-  const ScannerScreen(this.addToHoldingItems, {Key? key}) : super(key: key);
+  final Function setValueFn;
+  final bool isQr;
+  const ScannerScreen({
+    required this.setValueFn,
+    this.isQr = false,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ScannerScreenState createState() => _ScannerScreenState();
@@ -119,13 +124,21 @@ class _ScannerScreenState extends State<ScannerScreen> {
     controller.scannedDataStream.listen((scanData) {
       // setState(() {
       result = scanData;
-      if (result!.code!.length == 13 &&
-          result!.format == BarcodeFormat.code128) {
-        widget.addToHoldingItems(context, scanData.code!);
+      if (widget.isQr == true &&
+          result!.format == BarcodeFormat.qrcode &&
+          result!.code!.length == 38) {
+        widget.setValueFn(context, scanData.code!);
         controller.stopCamera();
         controller.dispose();
         Navigator.pop(context);
-      } else {}
+      }
+      if (result!.code!.length == 13 &&
+          result!.format == BarcodeFormat.code128) {
+        widget.setValueFn(context, scanData.code!);
+        controller.stopCamera();
+        controller.dispose();
+        Navigator.pop(context);
+      }
       // });
     });
   }
