@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/models/item_location.dart';
 import 'package:flutter_stock_manager/providers/holding_item.dart';
 import 'package:flutter_stock_manager/widgets/scanner_widget.dart';
+import 'package:provider/provider.dart';
 
 class AddItemLocateScreen extends StatefulWidget {
   final HoldingItem holdingItem;
@@ -17,12 +18,50 @@ class AddItemLocateScreen extends StatefulWidget {
 
 class _AddItemLocateScreenState extends State<AddItemLocateScreen> {
   ItemLocation? _itemLocation;
+  var _loading = true;
 
   void setItemLocation(String path) {
     path = path.split(':')[1];
     setState(() {
       _itemLocation = ItemLocation(path);
+      _loading = false;
     });
+  }
+
+  Future<void> addItem() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+      await Provider.of<HoldingItems>(context, listen: false).addItem(
+        itemId: widget.holdingItem.itemId,
+        itemName: widget.holdingItem.itemTitle,
+        itemLocation: _itemLocation!,
+      );
+      setState(() {
+        _loading = false;
+      });
+      Navigator.pop(context);
+    } catch (error) {
+      print(error);
+      await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('An error occurred!'),
+          content: Text('Please try again...'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('Okay'))
+          ],
+        ),
+      );
+      setState(() {
+        _loading = false;
+      });
+    }
   }
 
   @override
@@ -52,7 +91,6 @@ class _AddItemLocateScreenState extends State<AddItemLocateScreen> {
               setValueFn: setItemLocation,
             ),
           ),
-          //TODO Scan place and confirm screen to add item
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -107,12 +145,12 @@ class _AddItemLocateScreenState extends State<AddItemLocateScreen> {
                         fontSize: 16,
                       ),
                     ),
-                  _itemLocation == null
+                  _itemLocation == null || _loading == true
                       ? CircularProgressIndicator(
                           color: const Color(0xFFFF8244),
                         )
                       : ElevatedButton(
-                          onPressed: _itemLocation == null ? null : () {},
+                          onPressed: addItem,
                           child: Text(
                             'Confirm',
                           ),

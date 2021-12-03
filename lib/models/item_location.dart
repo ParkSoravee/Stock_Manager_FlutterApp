@@ -10,14 +10,9 @@ class ItemLocation {
     final pathSplit = fullPath.split('&');
     this.path = pathSplit[0];
     this.slot = pathSplit[1];
-    print(this.path);
-    print(this.slot);
     final seperatedPath = this.path.split('/');
     this.warehouse = seperatedPath[0].replaceAll('warehouse', '');
     this.zone = seperatedPath[1].replaceAll('zone', '');
     this.shelf = seperatedPath[2].replaceAll('shelf', '');
-    print(this.warehouse);
-    print(this.zone);
-    print(this.shelf);
   }
 }

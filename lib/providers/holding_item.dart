@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_stock_manager/models/item_location.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -78,7 +79,7 @@ class HoldingItems with ChangeNotifier {
       final body = json.encode({
         "barcodeList": barcodeList,
       });
-      print(body);
+      // print(body);
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
@@ -95,8 +96,41 @@ class HoldingItems with ChangeNotifier {
     }
   }
 
-  Future<void> addItem() async {
-    // TODO: delete a item in _items (no need fetch again) and post add item
+  Future<void> addItem({
+    required String itemId,
+    required String itemName,
+    required ItemLocation itemLocation,
+  }) async {
+    // save var
+    final _saveIndex = _items.indexWhere((item) => item.itemId == itemId);
+    final _saveItem = _items[_saveIndex];
+    try {
+      print(itemId);
+      print(itemLocation.path);
+      print(itemLocation.slot);
+      // delete
+      _items.removeWhere((item) => item.itemId == itemId);
+      // add item
+      var url = Uri.parse('$ENDPOINT/item');
+      final body = json.encode({
+        "id": itemId,
+        "path": itemLocation.path,
+        "location": itemLocation.slot,
+        "name": itemName,
+      });
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: body,
+      );
+      print(response.body);
+      final extracted = json.decode(response.body);
+      if (extracted['IsInserted'] == false) throw 'error';
+      notifyListeners();
+    } catch (error) {
+      _items.insert(_saveIndex, _saveItem);
+      throw error;
+    }
   }
 
   HoldingItem findByItemId(String id) {
