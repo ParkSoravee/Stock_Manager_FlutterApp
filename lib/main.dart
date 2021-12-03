@@ -42,6 +42,15 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xFFFF8244),
           ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              primary: const Color(0xFFFF8244),
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+            primary: const Color(0xFFFF8244),
+          )),
           scaffoldBackgroundColor: const Color(0xffffeac7),
           fontFamily: 'NotoSans',
         ),
