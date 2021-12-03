@@ -1,35 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stock_manager/models/pages_list.dart';
 import 'package:flutter_stock_manager/widgets/bottom_navigation.dart';
 
-import 'add_screen.dart';
-import 'history_screen.dart';
-import 'search_screen.dart';
 import '../widgets/top_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final int initPage;
+  const HomeScreen({this.initPage = 1, Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, Object>> _pages = [
-    {
-      'page': const HistoryScreen(),
-      'title': 'ประวัติ',
-    },
-    {
-      'page': const SearchScreen(),
-      'title': 'ค้นหา',
-    },
-    {
-      'page': const AddScreen(),
-      'title': 'เพิ่มของ',
-    },
-  ];
-  var _selectedPageIndex = 1;
+  // final List<Map<String, Object>> _pages = [
+  //   {
+  //     'page': const HistoryScreen(),
+  //     'title': 'ประวัติ',
+  //   },
+  //   {
+  //     'page': const SearchScreen(),
+  //     'title': 'ค้นหา',
+  //   },
+  //   {
+  //     'page': const AddScreen(),
+  //     'title': 'เพิ่มของ',
+  //   },
+  // ];
+  final _pages = PageList().pagesList;
+
+  var _selectedPageIndex;
+
+  @override
+  void initState() {
+    _selectedPageIndex = widget.initPage;
+    super.initState();
+  }
 
   void _selectPage(int index) {
     setState(() {

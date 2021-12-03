@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stock_manager/models/pages_list.dart';
+import 'package:flutter_stock_manager/screens/home_screen.dart';
 import 'package:flutter_stock_manager/widgets/bottom_navigation.dart';
 import 'package:flutter_stock_manager/widgets/top_bar.dart';
 
@@ -22,7 +24,17 @@ class MainDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var _selectedPageIndex = 0;
 
-    void _selectPage(int index) {} //TODO
+    final _pages = PageList().pagesList;
+
+    void _selectPage(int index) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (ctx) => HomeScreen(
+            initPage: index,
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
