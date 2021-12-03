@@ -143,7 +143,7 @@ class WareHouses with ChangeNotifier {
             itemId: itemData['id'],
             itemTitle: itemData['name'],
             dateIn: DateTime.parse(itemData['date']),
-            location: itemData['location'],
+            slot: itemData['location'],
           ),
         );
       });
@@ -170,7 +170,8 @@ class WareHouses with ChangeNotifier {
         dateOut: extractedProductDetail['dateOut'] == null
             ? null
             : DateTime.parse(extractedProductDetail['dateOut']),
-        location: extractedProductDetail['location'],
+        slot: extractedProductDetail['location'],
+        path: extractedProductDetail['path'],
         description: extractedProductDetail['description'],
       );
     } catch (error) {

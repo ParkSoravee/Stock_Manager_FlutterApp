@@ -105,9 +105,9 @@ class HoldingItems with ChangeNotifier {
     final _saveIndex = _items.indexWhere((item) => item.itemId == itemId);
     final _saveItem = _items[_saveIndex];
     try {
-      print(itemId);
-      print(itemLocation.path);
-      print(itemLocation.slot);
+      // print(itemId);
+      // print(itemLocation.path);
+      // print(itemLocation.slot);
       // delete
       _items.removeWhere((item) => item.itemId == itemId);
       // add item
@@ -123,7 +123,7 @@ class HoldingItems with ChangeNotifier {
         headers: {"Content-Type": "application/json"},
         body: body,
       );
-      print(response.body);
+      // print(response.body);
       final extracted = json.decode(response.body);
       if (extracted['IsInserted'] == false) throw 'error';
       notifyListeners();
@@ -131,6 +131,25 @@ class HoldingItems with ChangeNotifier {
       _items.insert(_saveIndex, _saveItem);
       throw error;
     }
+  }
+
+  Future<void> removeItem({
+    required String itemId,
+    required String path,
+  }) async {
+    var url = Uri.parse('$ENDPOINT/item');
+    final body = json.encode({
+      "itemIdList": [itemId],
+      "path": path,
+    });
+    final response = await http.delete(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    print(response.body);
+    final extracted = json.decode(response.body);
+    if (extracted['isDeleted'] == false) throw 'error';
   }
 
   HoldingItem findByItemId(String id) {

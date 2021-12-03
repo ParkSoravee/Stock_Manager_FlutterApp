@@ -38,9 +38,6 @@ class _AddItemLocateScreenState extends State<AddItemLocateScreen> {
         itemName: widget.holdingItem.itemTitle,
         itemLocation: _itemLocation!,
       );
-      setState(() {
-        _loading = false;
-      });
       Navigator.pop(context);
     } catch (error) {
       print(error);
@@ -48,7 +45,7 @@ class _AddItemLocateScreenState extends State<AddItemLocateScreen> {
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text('An error occurred!'),
-          content: Text('Please try again...'),
+          content: Text('Please try again later...'),
           actions: [
             TextButton(
                 onPressed: () {
@@ -58,9 +55,7 @@ class _AddItemLocateScreenState extends State<AddItemLocateScreen> {
           ],
         ),
       );
-      setState(() {
-        _loading = false;
-      });
+      Navigator.pop(context);
     }
   }
 

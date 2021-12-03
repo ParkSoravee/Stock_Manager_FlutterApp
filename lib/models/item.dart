@@ -2,7 +2,8 @@ class Item {
   final String? barcode;
   final String itemId;
   final String itemTitle;
-  final String location;
+  final String? path;
+  final String? slot;
   final DateTime dateIn;
   final DateTime? dateOut;
   final String? description;
@@ -13,7 +14,8 @@ class Item {
     required this.itemTitle,
     required this.dateIn,
     this.dateOut,
-    required this.location,
+    this.path,
+    this.slot,
     this.description,
   });
 }

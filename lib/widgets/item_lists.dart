@@ -69,7 +69,7 @@ class _ItemListsState extends State<ItemLists> {
                       );
                     },
                     child: ItemListTile(
-                      position: _loadedItems[i].location,
+                      position: _loadedItems[i].slot,
                       itemId: _loadedItems[i].itemId,
                       itemTitle: _loadedItems[i].itemTitle,
                       date: _loadedItems[i].dateIn,

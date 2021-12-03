@@ -6,8 +6,10 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScannerWidget extends StatefulWidget {
   final Function setValueFn;
+  final bool isItemId;
   const ScannerWidget({
     required this.setValueFn,
+    this.isItemId = false,
     Key? key,
   }) : super(key: key);
 
@@ -56,9 +58,15 @@ class _ScannerWidgetState extends State<ScannerWidget> {
     });
     controller.scannedDataStream.listen((scanData) {
       result = scanData;
-      if (result!.format == BarcodeFormat.qrcode &&
-          result!.code!.length >= 30 &&
+      if (!widget.isItemId &&
+          result!.format == BarcodeFormat.qrcode &&
           result!.code!.startsWith('locate:')) {
+        widget.setValueFn(scanData.code!);
+        controller.pauseCamera();
+      }
+      if (widget.isItemId &&
+          result!.format == BarcodeFormat.qrcode &&
+          result!.code!.length >= 38) {
         widget.setValueFn(scanData.code!);
         controller.pauseCamera();
       }

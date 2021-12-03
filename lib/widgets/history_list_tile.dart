@@ -17,6 +17,7 @@ class HistoryListTile extends StatelessWidget {
             builder: (ctx) => MainDetailScreen(
               title: 'รายละเอียด',
               backTitle: 'ประวัติ',
+              isHistory: true,
               showScreen: HistoryDetailScreen(
                 // itemId: historyItems.itemId,
                 historyId: historyItems.id,

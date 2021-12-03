@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/warehouses.dart';
 import 'package:flutter_stock_manager/widgets/warehouse_list.dart';
 import 'package:provider/provider.dart';
+
+import 'delete_item_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -33,8 +36,25 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? Center(child: CircularProgressIndicator())
-        : WareHouseLists(loadedWareHouse);
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => DeleteItemScreen(),
+            ),
+          );
+        },
+        child: const Icon(
+          Icons.drive_file_move_outlined,
+          size: 30,
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 2,
+      ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : WareHouseLists(loadedWareHouse),
+    );
   }
 }
