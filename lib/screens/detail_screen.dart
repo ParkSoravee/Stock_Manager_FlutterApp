@@ -42,67 +42,69 @@ class _DetailScreenState extends State<DetailScreen> {
               vertical: 15,
               horizontal: MediaQuery.of(context).size.width * 10 / 100,
             ),
-            child: Column(
-              children: [
-                Text(
-                  loadedItemDetail.itemTitle,
-                  style: const TextStyle(fontSize: 22),
-                ),
-                Text('barcode: ${loadedItemDetail.barcode}'),
-                ListTile(
-                  leading: Text('ID สินค้า:'),
-                  title: Text(loadedItemDetail.itemId),
-                ),
-                const Divider(),
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'วันเข้า',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          DateFormat(
-                            'dd/MM/yyyy HH:mm น.',
-                          ).format(loadedItemDetail.dateIn),
-                          style: const TextStyle(fontSize: 13),
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'วันออก',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          loadedItemDetail.dateOut != null
-                              ? DateFormat(
-                                  'dd/MM/yyyy HH:mm น.',
-                                ).format(loadedItemDetail.dateOut!)
-                              : '--/--/---- --:-- น.',
-                          style: const TextStyle(fontSize: 13),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                const Divider(
-                  height: 25,
-                ),
-                Text(
-                  loadedItemDetail.description!,
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    loadedItemDetail.itemTitle,
+                    style: const TextStyle(fontSize: 22),
+                  ),
+                  Text('barcode: ${loadedItemDetail.barcode}'),
+                  ListTile(
+                    leading: Text('ID สินค้า:'),
+                    title: Text(loadedItemDetail.itemId),
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'วันเข้า',
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            DateFormat(
+                              'dd/MM/yyyy HH:mm น.',
+                            ).format(loadedItemDetail.dateIn),
+                            style: const TextStyle(fontSize: 13),
+                          )
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'วันออก',
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            loadedItemDetail.dateOut != null
+                                ? DateFormat(
+                                    'dd/MM/yyyy HH:mm น.',
+                                  ).format(loadedItemDetail.dateOut!)
+                                : '--/--/---- --:-- น.',
+                            style: const TextStyle(fontSize: 13),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    height: 25,
+                  ),
+                  Text(
+                    loadedItemDetail.description!,
+                  ),
+                ],
+              ),
             ),
           );
     ;

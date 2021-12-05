@@ -44,76 +44,78 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
               vertical: 15,
               horizontal: MediaQuery.of(context).size.width * 10 / 100,
             ),
-            child: Column(
-              children: [
-                Text(
-                  loadedHistory.itemTitle,
-                  style: const TextStyle(fontSize: 22),
-                ),
-                Text(loadedHistory.detail == null
-                    ? 'barcode: -'
-                    : 'barcode: ${loadedHistory.detail!.id}'),
-                // Text('ID สินค้า: ${loadedHistory.itemId}'),
-                ListTile(
-                  leading: Text('ID สินค้า:'),
-                  title: Text(loadedHistory.itemId),
-                ),
-                const Divider(),
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'วันเข้า',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          loadedHistory.detail == null
-                              ? '-'
-                              : DateFormat(
-                                  'dd/MM/yyyy HH:mm น.',
-                                ).format(loadedHistory.detail!.dateIn),
-                          style: const TextStyle(fontSize: 13),
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'วันออก',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          loadedHistory.detail == null
-                              ? '-'
-                              : loadedHistory.detail!.dateOut != null
-                                  ? DateFormat(
-                                      'dd/MM/yyyy HH:mm น.',
-                                    ).format(loadedHistory.detail!.dateOut!)
-                                  : '--/--/---- --:-- น.',
-                          style: const TextStyle(fontSize: 13),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                const Divider(
-                  height: 25,
-                ),
-                Text(
-                  loadedHistory.detail == null
-                      ? '-'
-                      : loadedHistory.detail!.description,
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    loadedHistory.itemTitle,
+                    style: const TextStyle(fontSize: 22),
+                  ),
+                  Text(loadedHistory.detail == null
+                      ? 'barcode: -'
+                      : 'barcode: ${loadedHistory.detail!.id}'),
+                  // Text('ID สินค้า: ${loadedHistory.itemId}'),
+                  ListTile(
+                    leading: Text('ID สินค้า:'),
+                    title: Text(loadedHistory.itemId),
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'วันเข้า',
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            loadedHistory.detail == null
+                                ? '-'
+                                : DateFormat(
+                                    'dd/MM/yyyy HH:mm น.',
+                                  ).format(loadedHistory.detail!.dateIn),
+                            style: const TextStyle(fontSize: 13),
+                          )
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'วันออก',
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            loadedHistory.detail == null
+                                ? '-'
+                                : loadedHistory.detail!.dateOut != null
+                                    ? DateFormat(
+                                        'dd/MM/yyyy HH:mm น.',
+                                      ).format(loadedHistory.detail!.dateOut!)
+                                    : '--/--/---- --:-- น.',
+                            style: const TextStyle(fontSize: 13),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    height: 25,
+                  ),
+                  Text(
+                    loadedHistory.detail == null
+                        ? '-'
+                        : loadedHistory.detail!.description,
+                  ),
+                ],
+              ),
             ),
           );
   }

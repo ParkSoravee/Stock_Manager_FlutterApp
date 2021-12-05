@@ -22,6 +22,8 @@ class ShelfItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) => MainDetailScreen(
+              path:
+                  'warehouse${wareHouseName}/zone${zoneName}/shelf${shelfItem.name}',
               title: 'ชั้นวาง ${shelfItem.name}',
               backTitle: 'โซน $zoneName',
               showScreen: ItemLists(

@@ -15,6 +15,7 @@ class HistoryListTile extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) => MainDetailScreen(
+              path: '',
               title: 'รายละเอียด',
               backTitle: 'ประวัติ',
               isHistory: true,

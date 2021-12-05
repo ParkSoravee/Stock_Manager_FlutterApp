@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/warehouses.dart';
 import 'package:flutter_stock_manager/screens/detail_screen.dart';
 import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
-import 'package:flutter_stock_manager/models/item.dart';
 import 'package:flutter_stock_manager/widgets/item_list_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -59,6 +58,8 @@ class _ItemListsState extends State<ItemLists> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (ctx) => MainDetailScreen(
+                            path:
+                                'warehouse${widget.wareHouseName}/zone${widget.zoneName}/shelf${widget.shelfName}',
                             title: 'รายละเอียด',
                             backTitle: 'ชั้นวาง ${widget.shelfName}',
                             showScreen: DetailScreen(

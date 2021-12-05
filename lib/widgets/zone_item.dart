@@ -19,6 +19,7 @@ class ZoneItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) => MainDetailScreen(
+              path: 'warehouse${wareHouseName}/zone${zone.name}',
               title: 'โซน ${zone.name}',
               backTitle: 'โกดัง $wareHouseName',
               showScreen: ShelfList(

@@ -5,11 +5,15 @@ class TopBar extends StatefulWidget {
   final bool isMain;
   final String pageTitle;
   final String? backTitle;
+  final Function(String)? searchFn;
+  final TextEditingController textFieldController;
 
   const TopBar({
     required this.isMain,
     required this.pageTitle,
     this.backTitle,
+    this.searchFn,
+    required this.textFieldController,
   });
 
   @override
@@ -113,12 +117,34 @@ class _TopBarState extends State<TopBar> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Row(
-                    children: const [
+                    children: [
                       Icon(
                         CupertinoIcons.search,
                         size: 30,
                         color: Colors.white,
                       ),
+                      if (widget.searchFn != null)
+                        Expanded(
+                          child: TextField(
+                            controller: widget.textFieldController,
+                            onChanged: widget.searchFn,
+                            cursorColor: Colors.white60,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            autofillHints: null,
+                            enableSuggestions: false,
+                            textInputAction: TextInputAction.search,
+                            decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              contentPadding: EdgeInsets.fromLTRB(7, 0, 6, 5),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
