@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/models/pages_list.dart';
 import 'package:flutter_stock_manager/providers/search_item.dart';
+import 'package:flutter_stock_manager/providers/warehouses.dart';
 import 'package:flutter_stock_manager/widgets/bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
@@ -57,6 +58,69 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void addItemFunction(String path) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      final warehouse = Provider.of<WareHouses>(context, listen: false);
+      await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Are you sure to create...'),
+          content: Text(warehouse.strCreatePathAndName(path)),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.of(ctx).pop();
+              },
+              child: Text(
+                'Cencel',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                try {
+                  await warehouse.createPath(path);
+                } catch (error) {
+                  throw error;
+                }
+              },
+              child: Text(
+                'Create',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+            ),
+          ],
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (error) {
+      print(error);
+      await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('An error occurred!'),
+          content: Text('Some thing went wrong, please try again later...'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('Okay'))
+          ],
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   void initState() {
     _selectedPageIndex = widget.initPage;
@@ -95,15 +159,17 @@ class _HomeScreenState extends State<HomeScreen> {
             isMain: true,
             pageTitle: _pages[_selectedPageIndex]['title'].toString(),
             searchFn: selectSearchFunction,
+            addItemFunction: addItemFunction,
             textFieldController: textFieldController,
+            path: _selectedPageIndex == 1 ? '' : null,
           ),
           Expanded(
-            child: !_isSearching
-                ? _pages[_selectedPageIndex]['page'] as Widget
-                : _isLoading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
+            child: _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : !_isSearching
+                    ? _pages[_selectedPageIndex]['page'] as Widget
                     : searchList!,
           ),
         ],

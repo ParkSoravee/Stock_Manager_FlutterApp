@@ -1,19 +1,31 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+enum MenuOptions {
+  Add,
+  ListView,
+  GridView,
+}
 
 class TopBar extends StatefulWidget {
   final bool isMain;
   final String pageTitle;
   final String? backTitle;
   final Function(String)? searchFn;
+  final Function(String) addItemFunction;
   final TextEditingController textFieldController;
+  final String? path;
 
   const TopBar({
     required this.isMain,
     required this.pageTitle,
     this.backTitle,
     this.searchFn,
+    required this.addItemFunction,
     required this.textFieldController,
+    this.path,
   });
 
   @override
@@ -21,6 +33,75 @@ class TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<TopBar> {
+  Widget _menu() {
+    return widget.path == null || widget.path!.contains('shelf')
+        ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.more_horiz,
+              color: Colors.white,
+              size: 32,
+            ),
+          )
+        : PopupMenuButton<MenuOptions>(
+            onSelected: (MenuOptions selectedOption) {
+              if (selectedOption == MenuOptions.Add) {
+                widget.addItemFunction(widget.path!);
+              }
+            },
+            offset: Offset.fromDirection(pi / 2, 50),
+            icon: const Icon(
+              Icons.more_horiz,
+              color: Colors.white,
+              size: 32,
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            // padding: EdgeInsets.zero,
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: MenuOptions.Add,
+                child: Container(
+                  child: Text(
+                    widget.path!.contains('zone')
+                        ? 'เพิ่มชั้นวาง'
+                        : 'เพิ่มโกดัง',
+                  ),
+                  width: 140,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+              ),
+              PopupMenuDivider(),
+              PopupMenuItem(
+                value: MenuOptions.ListView,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('List'),
+                      Icon(Icons.format_list_bulleted),
+                    ],
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+              ),
+              PopupMenuItem(
+                value: MenuOptions.GridView,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Icon'),
+                      Icon(CupertinoIcons.square_grid_2x2),
+                    ],
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+              ),
+            ],
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +124,7 @@ class _TopBarState extends State<TopBar> {
                     widget.pageTitle,
                     style: const TextStyle(
                       fontSize: 30,
-                      height: 0.9,
+                      height: 0.8,
                       color: Colors.white,
                     ),
                   ),
@@ -52,6 +133,7 @@ class _TopBarState extends State<TopBar> {
                   height: 30,
                   width: double.infinity,
                   child: Stack(
+                    clipBehavior: Clip.none,
                     children: [
                       Container(
                         width: double.infinity,
@@ -66,17 +148,19 @@ class _TopBarState extends State<TopBar> {
                         ),
                       ),
                       Positioned(
-                        right: 10,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(20),
-                          onTap: () {},
-                          splashColor: Theme.of(context).backgroundColor,
-                          child: const Icon(
-                            Icons.more_horiz,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                        ),
+                        right: 0,
+                        top: -10,
+                        // child: InkWell(
+                        //   borderRadius: BorderRadius.circular(20),
+                        //   onTap: moreTapFunction,
+                        //   splashColor: Theme.of(context).backgroundColor,
+                        //   child: const Icon(
+                        //     Icons.more_horiz,
+                        //     size: 30,
+                        //     color: Colors.white,
+                        //   ),
+                        // ),
+                        child: _menu(),
                       ),
                       Positioned(
                         left: 0,
@@ -152,17 +236,16 @@ class _TopBarState extends State<TopBar> {
               if (widget.isMain)
                 Material(
                   color: Colors.transparent,
-                  child: IconButton(
-                    splashRadius: 24,
-                    onPressed: () {
-                      // print(DateTime.parse('2021-11-05T16:36:40.818110').hour);
-                    },
-                    icon: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                  ),
+                  // child: IconButton(
+                  //   splashRadius: 24,
+                  //   onPressed: moreTapFunction,
+                  //   icon: const Icon(
+                  //     Icons.more_horiz,
+                  //     color: Colors.white,
+                  //     size: 32,
+                  //   ),
+                  // ),
+                  child: _menu(),
                 ),
             ],
           ),

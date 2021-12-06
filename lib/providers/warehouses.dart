@@ -179,4 +179,68 @@ class WareHouses with ChangeNotifier {
       throw error;
     }
   }
+
+  String? _defineType(String path) {
+    if (path.contains('shelf')) {
+      return null;
+    } else if (path.contains('zone')) {
+      return 'shelf';
+    } else if (path.contains('warehouse')) {
+      return 'zone';
+    } else if (path == '') {
+      return 'warehouse';
+    }
+    return null;
+  }
+
+  String? _defineName(String type) {
+    if (type == 'warehouse') {
+      return (_warehouseItems.length + 1).toString();
+    } else if (type == 'zone') {
+      return String.fromCharCode(_zoneItems.length + 1 + 64);
+    } else if (type == 'shelf') {
+      return (_shelfItems.length + 1).toString();
+    }
+  }
+
+  String strCreatePathAndName(String path) {
+    String? type = _defineType(path);
+    String? name = _defineName(type!);
+    String out = '$type$name ';
+    if (path != '') out += 'in ' + path;
+    return out;
+  }
+
+  Future<void> createPath(String path) async {
+    // '' -> add warehouse
+    // 'warehouse1' -> add zone
+    // 'warehouse1/zoneA' -> add shelf
+    // 'warehouse1/zoneA/shelf1' -> no
+    try {
+      print('creating path...');
+      String? type = _defineType(path);
+      if (type == null) return;
+      String? name = _defineName(type);
+      if (name == null) return;
+
+      var url = Uri.parse('$ENDPOINT/path');
+      final body = json.encode({
+        "path": path,
+        "type": type,
+        "name": name,
+      });
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: body,
+      );
+      // print(response.body);
+      final extracted = json.decode(response.body);
+      if (extracted['isInserted'] == false) throw 'error';
+      // await fetchWareHouses();
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
 }
