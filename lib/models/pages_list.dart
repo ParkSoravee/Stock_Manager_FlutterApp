@@ -9,7 +9,7 @@ class PageList {
       'title': 'ประวัติ',
     },
     {
-      'page': const SearchScreen(),
+      'page': SearchScreen(),
       'title': 'ค้นหา',
     },
     {

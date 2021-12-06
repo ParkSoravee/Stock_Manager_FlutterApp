@@ -193,11 +193,14 @@ class WareHouses with ChangeNotifier {
     return null;
   }
 
-  String? _defineName(String type) {
+  String? _defineName(String type, String path) {
     if (type == 'warehouse') {
       return (_warehouseItems.length + 1).toString();
     } else if (type == 'zone') {
-      return String.fromCharCode(_zoneItems.length + 1 + 64);
+      final warehouseName = path.replaceAll('warehouse', '');
+      final myWarehouse = _warehouseItems
+          .firstWhere((warehouse) => warehouse.name == warehouseName);
+      return String.fromCharCode(myWarehouse.zone.length + 1 + 64);
     } else if (type == 'shelf') {
       return (_shelfItems.length + 1).toString();
     }
@@ -205,7 +208,7 @@ class WareHouses with ChangeNotifier {
 
   String strCreatePathAndName(String path) {
     String? type = _defineType(path);
-    String? name = _defineName(type!);
+    String? name = _defineName(type!, path);
     String out = '$type$name ';
     if (path != '') out += 'in ' + path;
     return out;
@@ -218,9 +221,10 @@ class WareHouses with ChangeNotifier {
     // 'warehouse1/zoneA/shelf1' -> no
     try {
       print('creating path...');
+      final warehouseName = path.replaceAll('warehouse', '');
       String? type = _defineType(path);
       if (type == null) return;
-      String? name = _defineName(type);
+      String? name = _defineName(type, path);
       if (name == null) return;
 
       var url = Uri.parse('$ENDPOINT/path');
@@ -238,6 +242,18 @@ class WareHouses with ChangeNotifier {
       final extracted = json.decode(response.body);
       if (extracted['isInserted'] == false) throw 'error';
       // await fetchWareHouses();
+
+      // add path
+      // if (type == 'zone') {
+      //   _warehouseItems
+      //       .firstWhere((wareh) => wareh.name == warehouseName)
+      //       .zone
+      //       .add(Zone(name: name, itemCount: 0));
+      // } else if (type == 'warehouse') {
+      //   _warehouseItems.add(WareHouse(name: name, zone: []));
+      // } else if (type == 'shelf') {
+      //   _shelfItems.add(Shelf(name: name, itemCount: 0));
+      // }
     } catch (error) {
       print(error);
       throw error;

@@ -72,7 +72,7 @@ class _MainDetailScreenState extends State<MainDetailScreen> {
     }
   }
 
-  void addItemFunction(String path) async {
+  Future<void> addItemFunction(String path) async {
     try {
       setState(() {
         _isLoading = true;
