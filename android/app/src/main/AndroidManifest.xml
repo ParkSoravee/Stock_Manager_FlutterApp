@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_stock_manager">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="flutter_stock_manager"
+        android:label="Stock Manager"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
