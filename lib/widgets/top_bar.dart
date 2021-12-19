@@ -223,7 +223,7 @@ class _TopBarState extends State<TopBar> {
               Expanded(
                 child: Container(
                   height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.only(left: 10, right: 0),
                   decoration: BoxDecoration(
                     color: const Color(0xffe26b2d),
                     borderRadius: BorderRadius.circular(15),
@@ -256,6 +256,24 @@ class _TopBarState extends State<TopBar> {
                                   FloatingLabelBehavior.never,
                               contentPadding: EdgeInsets.fromLTRB(7, 0, 6, 5),
                               border: InputBorder.none,
+                              // suffixIcon: Icon(Icons.clear),
+                            ),
+                          ),
+                        ),
+                      if (widget.textFieldController.text != '')
+                        Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            onPressed: () {
+                              widget.textFieldController.text = '';
+                              _textFieldKey.currentState!.save();
+                            },
+                            splashColor: Colors.white10,
+                            splashRadius: 15,
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.white60,
+                              size: 20,
                             ),
                           ),
                         ),
