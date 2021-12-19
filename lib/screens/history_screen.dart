@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_manager/providers/history.dart';
+import 'package:flutter_stock_manager/widgets/history_list.dart';
 import 'package:flutter_stock_manager/widgets/history_list_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -40,16 +41,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return _isLoading
         ? Center(child: CircularProgressIndicator())
-        : Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: loadedHistoryItem.length,
-                  itemBuilder: (ctx, i) =>
-                      HistoryListTile(loadedHistoryItem[i]),
-                ),
-              )
-            ],
-          );
+        : HistoryList(loadedHistoryItem);
   }
 }

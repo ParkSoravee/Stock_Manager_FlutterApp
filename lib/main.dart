@@ -60,6 +60,16 @@ class MyApp extends StatelessWidget {
           dialogTheme: DialogTheme(
             backgroundColor: const Color(0xFFFF8244),
           ),
+          tabBarTheme: TabBarTheme(
+            indicator: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: const Color(0xffe26b2d),
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
           fontFamily: 'NotoSans',
         ),
         home: const HomeScreen(),

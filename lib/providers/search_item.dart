@@ -5,6 +5,7 @@ import 'package:flutter_stock_manager/models/item.dart';
 import 'package:flutter_stock_manager/providers/history.dart';
 import 'package:flutter_stock_manager/screens/detail_screen.dart';
 import 'package:flutter_stock_manager/screens/main_detail_screen.dart';
+import 'package:flutter_stock_manager/widgets/history_list.dart';
 import 'package:flutter_stock_manager/widgets/history_list_tile.dart';
 import 'package:flutter_stock_manager/widgets/item_list_tile.dart';
 import 'package:http/http.dart' as http;
@@ -19,13 +20,19 @@ class SearchItem with ChangeNotifier {
       Uri url;
       if (pattern.startsWith('date:') && pattern.length == 26) {
         final dateRange = pattern.replaceFirst('date:', '').split('-');
-        final preDate = DateTime.parse(dateRange[0].trim().replaceAll('/', '-'))
-            .toIso8601String();
+        final preDate =
+            DateTime.parse(dateRange[0].trim().replaceAll('/', '-'));
         final postDate =
             DateTime.parse(dateRange[1].trim().replaceAll('/', '-'))
-                .toIso8601String();
+                .add(Duration(hours: 23, minutes: 59, seconds: 59));
+        final preDateStr = preDate.toIso8601String();
+        final postDateStr = postDate.toIso8601String();
+        if (preDate.isAfter(postDate)) {
+          throw Exception('date range in valid');
+        }
         url = Uri.parse(
-            '$ENDPOINT/history/search?preDate=$preDate&postDate=$postDate');
+            '$ENDPOINT/history/search?preDate=$preDateStr&postDate=$postDateStr');
+        // print('$ENDPOINT/history/search?preDate=$preDateStr&postDate=$postDateStr');
       } else {
         url = Uri.parse('$ENDPOINT/history/search?pattern=$pattern');
       }
@@ -46,22 +53,22 @@ class SearchItem with ChangeNotifier {
       });
       // print(historyList);
       loadedHistoryItem = _loadedHistory;
-
-      return loadedHistoryItem.length < 1
-          ? Center(
-              child: Text('No result'),
-            )
-          : Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: loadedHistoryItem.length,
-                    itemBuilder: (ctx, i) =>
-                        HistoryListTile(loadedHistoryItem[i]),
-                  ),
-                )
-              ],
-            );
+      // return loadedHistoryItem.length < 1
+      //     ? Center(
+      //         child: Text('No result'),
+      //       )
+      //     : Column(
+      //         children: [
+      //           Expanded(
+      //             child: ListView.builder(
+      //               itemCount: loadedHistoryItem.length,
+      //               itemBuilder: (ctx, i) =>
+      //                   HistoryListTile(loadedHistoryItem[i]),
+      //             ),
+      //           )
+      //         ],
+      //       );
+      return HistoryList(loadedHistoryItem);
     } catch (error) {
       print(error);
       // throw error;
