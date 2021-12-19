@@ -35,32 +35,36 @@ class _HoldingListState extends State<HoldingList> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: loadedHoldingItem.length,
-              itemBuilder: (ctx, i) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: InkWell(
-                  onTap: () {
-                    // Go to add place and confirm screen
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => AddItemLocateScreen(
-                          holdingItem: loadedHoldingItem[i],
+          : loadedHoldingItem.length < 1
+              ? Center(
+                  child: Text('ไม่มีสินค้ารอเข้าคลัง'),
+                )
+              : ListView.builder(
+                  itemCount: loadedHoldingItem.length,
+                  itemBuilder: (ctx, i) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: InkWell(
+                      onTap: () {
+                        // Go to add place and confirm screen
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => AddItemLocateScreen(
+                              holdingItem: loadedHoldingItem[i],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: HistoryItemListTile(
+                          itemId: loadedHoldingItem[i].itemId,
+                          itemTitle: loadedHoldingItem[i].itemTitle,
+                          date: loadedHoldingItem[i].date,
                         ),
                       ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: HistoryItemListTile(
-                      itemId: loadedHoldingItem[i].itemId,
-                      itemTitle: loadedHoldingItem[i].itemTitle,
-                      date: loadedHoldingItem[i].date,
                     ),
                   ),
                 ),
-              ),
-            ),
     );
   }
 }

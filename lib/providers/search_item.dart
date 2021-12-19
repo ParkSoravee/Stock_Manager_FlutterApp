@@ -105,32 +105,36 @@ class SearchItem with ChangeNotifier {
       });
       _items = _loadedItems;
 
-      return ListView.builder(
-        itemCount: _items.length,
-        itemBuilder: (ctx, i) => InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (ctx) => MainDetailScreen(
-                  path: path,
-                  title: 'รายละเอียด',
-                  // backTitle: 'ชั้นวาง ${widget.shelfName}',
-                  backTitle: 'ค้นหา',
-                  showScreen: DetailScreen(
-                    itemId: _items[i].itemId,
-                  ),
+      return _items.length < 1
+          ? Center(
+              child: Text('No result'),
+            )
+          : ListView.builder(
+              itemCount: _items.length,
+              itemBuilder: (ctx, i) => InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => MainDetailScreen(
+                        path: path,
+                        title: 'รายละเอียด',
+                        // backTitle: 'ชั้นวาง ${widget.shelfName}',
+                        backTitle: 'ค้นหา',
+                        showScreen: DetailScreen(
+                          itemId: _items[i].itemId,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: ItemListTile(
+                  position: _items[i].slot!,
+                  itemId: _items[i].itemId,
+                  itemTitle: _items[i].itemTitle,
+                  date: _items[i].dateIn,
                 ),
               ),
             );
-          },
-          child: ItemListTile(
-            position: _items[i].slot!,
-            itemId: _items[i].itemId,
-            itemTitle: _items[i].itemTitle,
-            date: _items[i].dateIn,
-          ),
-        ),
-      );
     } catch (error) {
       print(error);
       throw error;

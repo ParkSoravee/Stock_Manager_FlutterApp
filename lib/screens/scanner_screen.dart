@@ -43,7 +43,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
             _buildQrView(context),
             Positioned(
               child: Text(
-                'ให้ตำแหน่ง QR/Barcode อยู่กลางภาพ',
+                widget.isQr
+                    ? 'ให้ตำแหน่ง QR Code อยู่กลางภาพ'
+                    : 'ให้ตำแหน่ง Barcode อยู่กลางภาพ',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -111,7 +113,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
         borderRadius: 10,
         borderLength: 30,
         borderWidth: 10,
-        cutOutSize: MediaQuery.of(context).size.width * 0.8,
+        // cutOutSize: MediaQuery.of(context).size.width * 0.8,
+        cutOutHeight: widget.isQr
+            ? MediaQuery.of(context).size.width * 0.8
+            : MediaQuery.of(context).size.width * 0.8 * 0.4,
+        cutOutWidth: MediaQuery.of(context).size.width * 0.8,
+        // cutOutWidth: ,
       ),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );

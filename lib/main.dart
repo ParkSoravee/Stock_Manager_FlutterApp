@@ -57,9 +57,9 @@ class MyApp extends StatelessWidget {
             primary: const Color(0xFFFF8244),
           )),
           scaffoldBackgroundColor: const Color(0xffffeac7),
-          dialogTheme: DialogTheme(
-            backgroundColor: const Color(0xFFFF8244),
-          ),
+          // dialogTheme: DialogTheme(
+          //   backgroundColor: const Color(0xFFFF8244),
+          // ),
           tabBarTheme: TabBarTheme(
             indicator: BoxDecoration(
               border: Border(
