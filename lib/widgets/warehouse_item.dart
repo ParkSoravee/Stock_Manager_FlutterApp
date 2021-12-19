@@ -50,6 +50,11 @@ class _WareHouseItemState extends State<WareHouseItem> {
                     },
                     icon: Icon(Icons.add),
                     splashRadius: 25,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.7),
+                    // Colors.black54,
                   ),
                   Spacer(),
                   Icon(
