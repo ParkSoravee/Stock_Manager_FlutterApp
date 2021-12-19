@@ -7,14 +7,38 @@ import 'package:provider/provider.dart';
 
 import 'add_item_locate_screen.dart';
 
-class AddScreen extends StatelessWidget {
+class AddScreen extends StatefulWidget {
   const AddScreen({Key? key}) : super(key: key);
 
-  void addToHoldingItems(BuildContext context, String barcode) async {
-    print(barcode);
+  @override
+  _AddScreenState createState() => _AddScreenState();
+}
+
+class _AddScreenState extends State<AddScreen> {
+  void showSnackBar(String text) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+        duration: Duration(milliseconds: 1500),
+        width: MediaQuery.of(context).size.width - 10,
+        elevation: 0,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        backgroundColor: Theme.of(context).primaryColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+
+  void addToHoldingItems(String barcode) async {
+    // print(barcode);
     try {
       await Provider.of<HoldingItems>(context, listen: false)
           .addHoldingItem(barcode);
+      showSnackBar('เพิ่มสินค้าลงในสินค้ารอเข้าคลังสำเร็จ');
     } catch (error) {
       await showDialog<Null>(
         context: context,
@@ -33,11 +57,11 @@ class AddScreen extends StatelessWidget {
     }
   }
 
-  void addItemByQR(BuildContext context) async {
+  void addItemByQR() async {
     try {
       var _itemId = '';
 
-      void setItemId(BuildContext context, String qrcode) {
+      void setItemId(String qrcode) {
         _itemId = qrcode;
       }
 
@@ -59,6 +83,7 @@ class AddScreen extends StatelessWidget {
         MaterialPageRoute(
           builder: (ctx) => AddItemLocateScreen(
             holdingItem: myHoldingItem,
+            showSnackBar: showSnackBar,
           ),
         ),
       );
@@ -85,6 +110,7 @@ class AddScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        tooltip: 'เพิ่มสินค้ารอเข้าคลัง',
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -117,7 +143,7 @@ class AddScreen extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {
-                        addItemByQR(context);
+                        addItemByQR();
                       },
                       icon: Icon(
                         Icons.qr_code_scanner_rounded,
@@ -135,7 +161,9 @@ class AddScreen extends StatelessWidget {
               ],
             ),
           ),
-          const HoldingList(),
+          HoldingList(
+            showSnackBar: showSnackBar,
+          ),
         ],
       ),
     );

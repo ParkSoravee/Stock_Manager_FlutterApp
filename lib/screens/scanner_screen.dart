@@ -134,14 +134,14 @@ class _ScannerScreenState extends State<ScannerScreen> {
       if (widget.isQr == true &&
           result!.format == BarcodeFormat.qrcode &&
           result!.code!.length >= 38) {
-        widget.setValueFn(context, scanData.code!);
+        widget.setValueFn(scanData.code!);
         controller.stopCamera();
         controller.dispose();
         Navigator.pop(context);
       }
       if (result!.code!.length == 13 &&
           result!.format == BarcodeFormat.code128) {
-        widget.setValueFn(context, scanData.code!);
+        widget.setValueFn(scanData.code!);
         controller.stopCamera();
         controller.dispose();
         Navigator.pop(context);

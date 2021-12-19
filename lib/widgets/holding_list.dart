@@ -5,7 +5,8 @@ import 'package:flutter_stock_manager/widgets/history_item_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class HoldingList extends StatefulWidget {
-  const HoldingList({Key? key}) : super(key: key);
+  final Function(String) showSnackBar;
+  const HoldingList({Key? key, required this.showSnackBar}) : super(key: key);
 
   @override
   _HoldingListState createState() => _HoldingListState();
@@ -50,6 +51,7 @@ class _HoldingListState extends State<HoldingList> {
                           MaterialPageRoute(
                             builder: (ctx) => AddItemLocateScreen(
                               holdingItem: loadedHoldingItem[i],
+                              showSnackBar: widget.showSnackBar,
                             ),
                           ),
                         );

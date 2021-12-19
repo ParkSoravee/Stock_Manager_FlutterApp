@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 class AddItemLocateScreen extends StatefulWidget {
   final HoldingItem holdingItem;
+  final Function(String) showSnackBar;
   const AddItemLocateScreen({
     required this.holdingItem,
+    required this.showSnackBar,
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +40,8 @@ class _AddItemLocateScreenState extends State<AddItemLocateScreen> {
         itemName: widget.holdingItem.itemTitle,
         itemLocation: _itemLocation!,
       );
+      widget
+          .showSnackBar('เพิ่ม ${widget.holdingItem.itemTitle} เข้าคลังสำเร็จ');
       Navigator.pop(context);
     } catch (error) {
       print(error);
