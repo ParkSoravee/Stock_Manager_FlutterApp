@@ -16,17 +16,25 @@ class SearchItem with ChangeNotifier {
   Future<Widget> historySearch(String pattern) async {
     try {
       final List<History> loadedHistoryItem;
-
-      // final queryParameters = {
-      //   'pattern': pattern,
-      // };
-      final url = Uri.parse('$ENDPOINT/history/search?pattern=$pattern');
+      Uri url;
+      if (pattern.startsWith('date:') && pattern.length == 26) {
+        final dateRange = pattern.replaceFirst('date:', '').split('-');
+        final preDate = DateTime.parse(dateRange[0].trim().replaceAll('/', '-'))
+            .toIso8601String();
+        final postDate =
+            DateTime.parse(dateRange[1].trim().replaceAll('/', '-'))
+                .toIso8601String();
+        url = Uri.parse(
+            '$ENDPOINT/history/search?preDate=$preDate&postDate=$postDate');
+      } else {
+        url = Uri.parse('$ENDPOINT/history/search?pattern=$pattern');
+      }
       final response = await http.get(url);
       final extractedData = (json.decode(utf8.decode(response.bodyBytes))
           as Map<String, dynamic>);
       final historyList = extractedData['searchedResults'] as List<dynamic>;
       List<History> _loadedHistory = [];
-
+      // print('search!!!');
       historyList.forEach((historyData) {
         _loadedHistory.add(History(
           id: historyData['id'],
@@ -36,22 +44,30 @@ class SearchItem with ChangeNotifier {
           date: DateTime.parse(historyData['date']),
         ));
       });
-      print(historyList);
+      // print(historyList);
       loadedHistoryItem = _loadedHistory;
 
-      return Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: loadedHistoryItem.length,
-              itemBuilder: (ctx, i) => HistoryListTile(loadedHistoryItem[i]),
-            ),
-          )
-        ],
-      );
+      return loadedHistoryItem.length < 1
+          ? Center(
+              child: Text('No result'),
+            )
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: loadedHistoryItem.length,
+                    itemBuilder: (ctx, i) =>
+                        HistoryListTile(loadedHistoryItem[i]),
+                  ),
+                )
+              ],
+            );
     } catch (error) {
       print(error);
-      throw error;
+      // throw error;
+      return Center(
+        child: Text('No result (error)'),
+      );
     }
   }
 

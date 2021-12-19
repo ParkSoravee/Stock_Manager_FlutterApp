@@ -68,7 +68,7 @@ class WareHouses with ChangeNotifier {
   }
 
   Future<bool> fetchWareHouses() async {
-    print('fetch warehouse');
+    // print('fetch warehouse');
     try {
       var url = Uri.parse('$ENDPOINT/warehouse');
       final response = await http.get(url);

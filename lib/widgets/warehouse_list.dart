@@ -11,6 +11,7 @@ class WareHouseLists extends StatefulWidget {
 
 class _WareHouseListsState extends State<WareHouseLists> {
   var _isLoading = true;
+  var _isDispose = false;
   late List<WareHouse> loadedWareHouse;
 
   Future<void> addItemFunction(String path) async {
@@ -84,14 +85,22 @@ class _WareHouseListsState extends State<WareHouseLists> {
         .fetchWareHouses()
         .then((result) {
       if (result == true) {
-        setState(() {
-          loadedWareHouse =
-              Provider.of<WareHouses>(context, listen: false).warehouses;
-          _isLoading = false;
-        });
+        if (!_isDispose) {
+          setState(() {
+            loadedWareHouse =
+                Provider.of<WareHouses>(context, listen: false).warehouses;
+            _isLoading = false;
+          });
+        }
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _isDispose = true;
+    super.dispose();
   }
 
   @override

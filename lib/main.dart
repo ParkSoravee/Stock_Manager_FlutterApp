@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: const Color(0xffffeac7),
           colorScheme: ThemeData().colorScheme.copyWith(
                 secondary: const Color(0xffe26b2d),
+                primary: const Color(0xFFFF8244),
               ),
           splashColor: const Color(0xffffd07f),
           appBarTheme: const AppBarTheme(
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
             primary: const Color(0xFFFF8244),
           )),
           scaffoldBackgroundColor: const Color(0xffffeac7),
+          dialogTheme: DialogTheme(
+            backgroundColor: const Color(0xFFFF8244),
+          ),
           fontFamily: 'NotoSans',
         ),
         home: const HomeScreen(),

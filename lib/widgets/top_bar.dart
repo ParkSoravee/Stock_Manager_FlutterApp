@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 enum MenuOptions {
   Add,
@@ -13,7 +14,7 @@ class TopBar extends StatefulWidget {
   final bool isMain;
   final String pageTitle;
   final String? backTitle;
-  final Function(String)? searchFn;
+  final Function(String?)? searchFn;
   final Function(String) addItemFunction;
   final TextEditingController textFieldController;
   final String? path;
@@ -33,16 +34,43 @@ class TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<TopBar> {
+  final _textFieldKey = GlobalKey<FormFieldState>();
+  Future<void> selectDateRange() async {
+    final _dateRange = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2021, 11),
+      lastDate: DateTime(2023),
+    );
+    if (_dateRange == null) return;
+    final _dateSelected =
+        'date:${DateFormat('yyyy/MM/dd').format(_dateRange.start)}-${DateFormat('yyyy/MM/dd').format(_dateRange.end)}';
+    // print(_dateSelected);
+    // setState(() {
+    widget.textFieldController.text = _dateSelected;
+    _textFieldKey.currentState!.save();
+    // });
+  }
+
   Widget _menu() {
     return widget.path == null || widget.path!.contains('shelf')
-        ? Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.more_horiz,
-              color: Colors.white,
-              size: 32,
-            ),
-          )
+        ? widget.pageTitle == 'ประวัติ'
+            ? IconButton(
+                onPressed: selectDateRange,
+                icon: Icon(
+                  CupertinoIcons.calendar,
+                  color: Colors.white,
+                  size: 28,
+                ),
+                splashRadius: 30,
+              )
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.more_horiz,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              )
         : PopupMenuButton<MenuOptions>(
             onSelected: (MenuOptions selectedOption) {
               if (selectedOption == MenuOptions.Add) {
@@ -209,9 +237,11 @@ class _TopBarState extends State<TopBar> {
                       ),
                       if (widget.searchFn != null)
                         Expanded(
-                          child: TextField(
+                          child: TextFormField(
+                            key: _textFieldKey,
                             controller: widget.textFieldController,
                             onChanged: widget.searchFn,
+                            onSaved: widget.searchFn,
                             cursorColor: Colors.white60,
                             style: TextStyle(
                               color: Colors.white,
