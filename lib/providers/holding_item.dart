@@ -115,7 +115,7 @@ class HoldingItems with ChangeNotifier {
       final body = json.encode({
         "id": itemId,
         "path": itemLocation.path,
-        "location": itemLocation.slot,
+        "location": itemLocation.slot.trim(),
         "name": itemName,
       });
       final response = await http.post(

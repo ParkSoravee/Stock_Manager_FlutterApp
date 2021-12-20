@@ -18,4 +18,28 @@ class Item {
     this.slot,
     this.description,
   });
+
+  String? get warehouseName {
+    if (this.path == null || this.slot == null) {
+      return null;
+    }
+    final splitedPath = this.path!.split('/');
+    return splitedPath[0].replaceAll('warehouse', '');
+  }
+
+  String? get zoneName {
+    if (this.path == null || this.slot == null) {
+      return null;
+    }
+    final splitedPath = this.path!.split('/');
+    return splitedPath[1].replaceAll('zone', '');
+  }
+
+  String? get shelfName {
+    if (this.path == null || this.slot == null) {
+      return null;
+    }
+    final splitedPath = this.path!.split('/');
+    return splitedPath[2].replaceAll('shelf', '');
+  }
 }

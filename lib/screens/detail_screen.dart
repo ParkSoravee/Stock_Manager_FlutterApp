@@ -55,6 +55,43 @@ class _DetailScreenState extends State<DetailScreen> {
                     title: Text(loadedItemDetail.itemId),
                   ),
                   const Divider(),
+                  if (loadedItemDetail.path != null &&
+                      loadedItemDetail.slot != null)
+                    Column(
+                      children: [
+                        Container(
+                          decoration:
+                              BoxDecoration(border: Border.all(width: 1.5)),
+                          padding: EdgeInsets.all(2),
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            loadedItemDetail.slot!,
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Warehouse: ' + loadedItemDetail.warehouseName!,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          'Zone: ' + loadedItemDetail.zoneName!,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          'Shelf: ' + loadedItemDetail.shelfName!,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  const Divider(),
                   const SizedBox(
                     height: 5,
                   ),
